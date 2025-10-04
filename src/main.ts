@@ -2,16 +2,22 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 
-async function start(){
+async function start() {
     const PORT = process.env.PORT || 5000;
     const app = await NestFactory.create(AppModule);
 
+    app.enableCors({
+        allowedHeaders: ['content-type'],
+        origin: 'http://localhost:5174',
+        credentials: true,
+    });
+
     const config = new DocumentBuilder()
-    .setTitle('Readwise API')
-    .setDescription('Readwise API description')
-    .setVersion('1.0.0')
-    .addTag('Readwise')
-    .build();
+        .setTitle('Readwise API')
+        .setDescription('Readwise API description')
+        .setVersion('1.0.0')
+        .addTag('Readwise')
+        .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('/api/docs', app, document);
 

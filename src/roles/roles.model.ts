@@ -16,7 +16,7 @@ export class Role {
     @Prop({required: true})
     description: string;
 
-    @ApiProperty({ type: [String], description: 'Список пользователей с этой ролью' })
+    @ApiProperty({ type: [User], description: 'Список пользователей с этой ролью' })
     @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
     users: User[];
 }

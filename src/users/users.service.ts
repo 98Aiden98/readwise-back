@@ -15,7 +15,7 @@ export class UsersService {
 
     async createUser(dto: CreateUserDto): Promise<User> {
         const createdUser = new this.userRepository(dto);
-        const role = await this.roleService.getRoleByValue("ADMIN");
+        const role = await this.roleService.getRoleByValue("USER");
         await createdUser.$set('roles', [role]);
         return createdUser.save();
     }
@@ -35,6 +35,8 @@ export class UsersService {
         if (role && user) {
             if (!user.roles.includes(role)) {
                 user.roles.push(role);
+                role.users.push(user);
+                await role.save();
                 await user.save();
             }
             return dto;
